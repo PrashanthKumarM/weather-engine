@@ -1,0 +1,34 @@
+<h2> Select Station </h2> 
+<%= form_tag(data_source_path, method: "post") do %>
+  <div class="form-group row">
+    <label class="col-xs-2" for="station">NEXRAD STATION</label>
+    <div class="col-xs-10"> 
+      <%= select_tag(:stations, options_for_select(@station_list,@submittedstation),  class: "col-xs-5") %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-xs-2" for="time">TIME & DATE</label>
+    <div class="col-xs-10">
+      <input class="datetimepicker" type="text" name="start[date]" id="start_date" data-prev= '<%= @submittedtime %>' >
+    </div>
+  </div>
+  <%= submit_tag("Submit") %>
+<% end %>
+
+<% if @redisvalue.present? %>
+  <div class="alert alert-success">
+    <p> Previous request submitted for: </p>
+    <a href="#" class="alert-link"><%= @redisvalue[2] %> <br> <%= @redisvalue[3] %></a>
+     <p> Job status </p>
+      <a href="#" class="alert-link"><%= @redisvalue[0] %> <br> <%= @redisvalue[1] %></a>
+  </div>
+<% end %>
+
+<h2>  Submitted Requests </h2>
+<%= form_tag(view_submissions_path, method: "post") do %>
+<%= submit_tag("View") %>
+<% end %>
+
+
+
+

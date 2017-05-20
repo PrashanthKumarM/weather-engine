@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  userid: 1
+  station: MyString
+  submissiontime: 2016-12-03 22:15:14
+
+two:
+  userid: 1
+  station: MyString
+  submissiontime: 2016-12-03 22:15:14

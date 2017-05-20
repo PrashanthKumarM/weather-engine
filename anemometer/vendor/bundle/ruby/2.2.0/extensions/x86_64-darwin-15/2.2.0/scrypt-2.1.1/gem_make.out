@@ -1,0 +1,9 @@
+/Users/pmurali/.rvm/rubies/ruby-2.2.4/bin/ruby -rubygems /Users/pmurali/TeamCodeRing/anemometer/vendor/bundle/ruby/2.2.0/gems/rake-11.2.2/exe/rake RUBYARCHDIR=/Users/pmurali/TeamCodeRing/anemometer/vendor/bundle/ruby/2.2.0/extensions/x86_64-darwin-15/2.2.0/scrypt-2.1.1 RUBYLIBDIR=/Users/pmurali/TeamCodeRing/anemometer/vendor/bundle/ruby/2.2.0/extensions/x86_64-darwin-15/2.2.0/scrypt-2.1.1
+mkdir -p x86_64-darwin
+gcc -fexceptions -O -fno-omit-frame-pointer -fno-strict-aliasing -Wall -msse -msse2 -arch x86_64 -arch i386   -o x86_64-darwin/crypto_scrypt-sse.o -c ./crypto_scrypt-sse.c
+gcc -fexceptions -O -fno-omit-frame-pointer -fno-strict-aliasing -Wall -msse -msse2 -arch x86_64 -arch i386   -o x86_64-darwin/memlimit.o -c ./memlimit.c
+gcc -fexceptions -O -fno-omit-frame-pointer -fno-strict-aliasing -Wall -msse -msse2 -arch x86_64 -arch i386   -o x86_64-darwin/scrypt_calibrate.o -c ./scrypt_calibrate.c
+gcc -fexceptions -O -fno-omit-frame-pointer -fno-strict-aliasing -Wall -msse -msse2 -arch x86_64 -arch i386   -o x86_64-darwin/scrypt_ext.o -c ./scrypt_ext.c
+gcc -fexceptions -O -fno-omit-frame-pointer -fno-strict-aliasing -Wall -msse -msse2 -arch x86_64 -arch i386   -o x86_64-darwin/scryptenc_cpuperf.o -c ./scryptenc_cpuperf.c
+gcc -fexceptions -O -fno-omit-frame-pointer -fno-strict-aliasing -Wall -msse -msse2 -arch x86_64 -arch i386   -o x86_64-darwin/sha256.o -c ./sha256.c
+gcc -bundle -o x86_64-darwin/libscrypt_ext.bundle x86_64-darwin/crypto_scrypt-sse.o x86_64-darwin/memlimit.o x86_64-darwin/scrypt_calibrate.o x86_64-darwin/scrypt_ext.o x86_64-darwin/scryptenc_cpuperf.o x86_64-darwin/sha256.o -fexceptions -arch x86_64 -arch i386 

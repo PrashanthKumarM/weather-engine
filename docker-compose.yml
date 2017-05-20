@@ -1,0 +1,99 @@
+version: '2'
+
+services:
+  db:
+    image: "library/mysql:5.6"
+    volumes:
+       - "./.data/db:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: weather_machine
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    volumes:
+      - 'redis:/var/lib/redis/data'
+    ports:
+      - '6379:6379'
+
+  anemometer:
+    depends_on:
+       - db
+       - redis
+       - master
+    build: ./anemometer
+    image: prmurali91/teamcodering_anemometer
+    command: bash -c "bundle exec rake db:migrate && rails server -b 0.0.0.0"
+    volumes:
+      - '.:/anemometer'
+    links:
+      - db
+      - redis
+      - master
+    ports:
+      - '3000:3000'
+
+  satellite:
+    depends_on:
+      - redis
+    build: ./satellite
+    image: prmurali91/teamcodering_satellite
+    command: npm start
+    links:
+      - redis
+    volumes:
+      - '.:/satellite'
+    ports:
+      - '4500:4500'
+
+  nginx:
+    depends_on:
+      - anemometer
+      - master
+      - satellite
+    build: ./nginx
+    links:
+        - anemometer:anemometer
+        - master:master
+        - satellite:satellite
+    ports:
+        - "80:80"
+
+  master:
+    depends_on:
+      - db
+      - redis
+    image: gettyimages/spark
+    command: uwsgi --http 0.0.0.0:5000 --module application:app --processes 1 --threads 8
+    build: ./rain_gauge
+    hostname: master
+    environment:
+      MASTER: spark://master:7077
+      SPARK_CONF_DIR: /conf
+      SPARK_PUBLIC_DNS: localhost
+    expose:
+      - 7001
+      - 7002
+      - 7003
+      - 7004
+      - 7005
+      - 7006
+      - 7077
+      - 6066
+    ports:
+      - 4040:4040
+      - 6066:6066
+      - 7077:7077
+      - 8080:8080
+      - 5000:5000
+    volumes:
+      - ./conf/master:/conf
+      - ./spark_data:/tmp/data
+    links:
+      - redis
+
+volumes:
+  redis:

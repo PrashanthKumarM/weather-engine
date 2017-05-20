@@ -1,0 +1,12 @@
+<% @jobs.each do |job| %>
+  <tr>
+    <td><%=  job.station %></td>
+    <td><%=  job.submissiontime %></td> 
+    <%= form_tag(modify_submissions_path, method: "post") do %>
+    <%= hidden_field_tag(:station, job.station) %>
+    <%= hidden_field_tag(:submissiontime, job.submissiontime) %>
+    <%= hidden_field_tag(:rediskey, job.rediskey) %>
+    <%= submit_tag("Modify") %> <br>
+    <% end %>
+  </tr>
+<% end %>
